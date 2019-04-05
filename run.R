@@ -17,18 +17,19 @@ orig.gsva<-gsva(emat,immGen,abs.ranking=F,method="gsva")
 orig.ssgsea<-gsva(emat,immGen,abs.ranking=F,method="ssgsea")
 #------------------------------------------------------
 norm.gsva<-gsva(emat.norm,immGen,abs.ranking=F,method="gsva")
-norm.ssgsea<-gsva(emat.norm,immGen,abs.ranking=F,method="gsva")
+norm.ssgsea<-gsva(emat.norm,immGen,abs.ranking=F,method="ssgsea")
 #------------------------------------------------------
 results<-melt(norm.gsva)
 results<-cbind(results,melt(orig.gsva))
 results<-cbind(results,melt(orig.ssgsea))
 results<-cbind(results,melt(norm.ssgsea))
 results<-cbind(results,pheno$cluster)
+results<-results[,c(1:2,grep("value",ignore.case=T,colnames(results)))]
 #------------------------------------------------------
 plotdata<-as.data.frame(results)
 plotdatanorm<-plotdata-apply(plotdata,1,mean)
 #------------------------------------------------------
-save.image(file="")
-write.table(file="",results)
+save.image(file="results.Rda")
+write.table(results,file="resultsMelt.txt",results)
 #------------------------------------------------------
 
